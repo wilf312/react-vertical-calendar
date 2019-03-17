@@ -1,8 +1,8 @@
-import * as React from "react";
-import { getYear, getMonth, getDate } from "date-fns";
-import { DateGrid, DateItem } from "./CalendarAtom";
-import styled from "styled-components";
-import {isHoliday} from '../util/index'
+import * as React from 'react'
+import { getYear, getMonth, getDate } from 'date-fns'
+import { DateGrid, DateItem } from './CalendarAtom'
+import styled from 'styled-components'
+import { isHoliday } from '../util/index'
 
 interface Props {
   monthYear: string
@@ -12,7 +12,7 @@ interface Props {
 }
 export default class CalendarItem extends React.Component<Props> {
   constructor(props) {
-    super(props); 
+    super(props)
   }
 
   shouldComponentUpdate(nextProps) {
@@ -20,12 +20,7 @@ export default class CalendarItem extends React.Component<Props> {
   }
 
   render() {
-    const {
-      monthYear,
-      month,
-      style,
-      clickHandler
-    } = this.props
+    const { monthYear, month, style, clickHandler } = this.props
     return (
       <Wrap style={style}>
         <div>
@@ -34,23 +29,23 @@ export default class CalendarItem extends React.Component<Props> {
         <div>
           <DateGrid>
             {month.map((d, index) => {
-            return (
-              <DateItem
-                key={index}
-                isToday={d.isToday}
-                isHoliday={isHoliday(d.day)}
-                isCurrentMonth={d.isCurrentMonth}
-                selectStatus={d.selectStatus}
-                onClick={() => clickHandler(d.date)}
+              return (
+                <DateItem
+                  key={index}
+                  isToday={d.isToday}
+                  isHoliday={isHoliday(d.day)}
+                  isCurrentMonth={d.isCurrentMonth}
+                  selectStatus={d.selectStatus}
+                  onClick={() => clickHandler(d.date)}
                 >
-                {getDate(d.date)}
-              </DateItem>
-            );
+                  {getDate(d.date)}
+                </DateItem>
+              )
             })}
           </DateGrid>
         </div>
       </Wrap>
-    );
+    )
   }
 }
 
@@ -59,4 +54,4 @@ const Wrap = styled.div`
   justify-content: center;
   flex-direction: column;
   align-items: center;
-`;
+`

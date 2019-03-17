@@ -1,11 +1,10 @@
-import * as React from "react";
-import { getYear, getMonth, getDate, format as DateFormat } from "date-fns";
-import { List, AutoSizer } from "react-virtualized";
-import CalendarItem from "./CalendarItem";
-import styled from "styled-components";
+import * as React from 'react'
+import { getYear, getMonth, getDate, format as DateFormat } from 'date-fns'
+import { List, AutoSizer } from 'react-virtualized'
+import CalendarItem from './CalendarItem'
+import styled from 'styled-components'
 
-const itemSize = 250;
-
+const itemSize = 250
 
 function rowRenderer(data, calendar, setDate) {
   const {
@@ -14,10 +13,10 @@ function rowRenderer(data, calendar, setDate) {
     isScrolling, // The List is currently being scrolled
     isVisible, // This row is visible within the List (eg it is not an overscanned row)
     style // Style object to be applied to row (to position it)
-  } = data;
+  } = data
   const calendarKey = Object.keys(calendar)[index]
-  const month = calendar[calendarKey];
-  const monthYear = month[14];
+  const month = calendar[calendarKey]
+  const monthYear = month[14]
   // console.log(style);
 
   return (
@@ -27,8 +26,8 @@ function rowRenderer(data, calendar, setDate) {
       monthYear={monthYear.date}
       month={month}
       clickHandler={setDate}
-       />
-  );
+    />
+  )
 }
 interface Props {
   setDate: any
@@ -39,11 +38,11 @@ interface Props {
 }
 export default class Calendar extends React.Component<Props> {
   constructor(props) {
-    super(props); 
+    super(props)
   }
   render() {
-    const props = this.props; 
-    const {calendar} = props
+    const props = this.props
+    const { calendar } = props
     return (
       <List
         width={window.innerWidth}
@@ -55,9 +54,9 @@ export default class Calendar extends React.Component<Props> {
         // scrollToCell={a => console.log("scrollToCell", a)}
         scrollToIndex={props.scrollToIndex}
         rowRenderer={params => {
-          return rowRenderer(params, calendar, props.setDate);
+          return rowRenderer(params, calendar, props.setDate)
         }}
       />
-    );
+    )
   }
 }

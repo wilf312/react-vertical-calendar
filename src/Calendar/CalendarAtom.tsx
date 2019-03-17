@@ -1,4 +1,4 @@
-import styled, { css } from "styled-components";
+import styled, { css } from 'styled-components'
 
 // カレンダー部分
 export const DateGrid = styled.div`
@@ -7,10 +7,10 @@ export const DateGrid = styled.div`
   grid-template-columns: repeat(7, 1fr);
   grid-auto-flow: dense;
   grid-gap: 2px 10px;
-`;
+`
 
 // カレンダー 日のスタイル
-const itemSize = 36;
+const itemSize = 36
 export const DateItem = styled.div`
   display: inline-flex;
   align-items: center;
@@ -21,7 +21,7 @@ export const DateItem = styled.div`
   border-radius: 50%;
 
   // 休日
-  color: ${props => (props.isHoliday ? "black" : "palevioletred")};
+  color: ${props => (props.isHoliday ? 'black' : 'palevioletred')};
   // 表示月の範囲外の日
   opacity: ${props => (props.isCurrentMonth ? 1 : 0.5)};
 
@@ -40,4 +40,4 @@ export const DateItem = styled.div`
       background: red;
       color: white;
     `};
-`;
+`

@@ -1,26 +1,31 @@
-import * as React from "react";
-import Calendar from "./Calendar";
-import * as dateFns from "date-fns";
-import {SelectMode, SelectStatus} from './const'
-import {createMonthList, getMonthRangeForYear, formatYYYYMM, formatYYYYMMDD} from './util'
+import * as React from 'react'
+import Calendar from './Calendar'
+import * as dateFns from 'date-fns'
+import { SelectMode, SelectStatus } from './const'
+import {
+  createMonthList,
+  getMonthRangeForYear,
+  formatYYYYMM,
+  formatYYYYMMDD
+} from './util'
 
 interface DateItem {
-  date: Date;
-  day: number;
-  isToday: boolean;
-  isCurrentMonth: boolean;
-  selectStatus: string;
+  date: Date
+  day: number
+  isToday: boolean
+  isCurrentMonth: boolean
+  selectStatus: string
 }
 interface State {
-  date: Date;
-  beforeDate: Date;
+  date: Date
+  beforeDate: Date
   calendar: any
   scrollToIndex: number
-  list?: DateItem[];
+  list?: DateItem[]
 }
 class StateList extends React.Component<{}, State> {
   constructor(props) {
-    super(props);
+    super(props)
     const current = new Date()
     const currentMonth = formatYYYYMM(current)
     const months = getMonthRangeForYear(current, 30)
@@ -35,9 +40,9 @@ class StateList extends React.Component<{}, State> {
       beforeDate: null,
       calendar: calendar,
       scrollToIndex: months.findIndex(d => {
-        return formatYYYYMM(d) === currentMonth;
+        return formatYYYYMM(d) === currentMonth
       })
-    };
+    }
   }
 
   addState() {
@@ -48,7 +53,7 @@ class StateList extends React.Component<{}, State> {
   }
 
   setSelectDateForList(date: Date) {
-    let list = this.state.calendar;
+    let list = this.state.calendar
     const selectedMonth = formatYYYYMM(date)
     const beforeMonth = formatYYYYMM(dateFns.addMonths(date, -1))
     const afterMonth = formatYYYYMM(dateFns.addMonths(date, 1))
@@ -70,11 +75,11 @@ class StateList extends React.Component<{}, State> {
     list[beforeMonth] = updateSelectedDateForMonth(list[beforeMonth], date)
     list[afterMonth] = updateSelectedDateForMonth(list[afterMonth], date)
 
-    this.setState({ date, beforeDate: this.state.date, calendar: list });
+    this.setState({ date, beforeDate: this.state.date, calendar: list })
   }
 
-  resetBeforeSelect () {
-    let list = this.state.calendar;
+  resetBeforeSelect() {
+    let list = this.state.calendar
     const date = this.state.date
 
     if (!date) {
@@ -110,15 +115,23 @@ class StateList extends React.Component<{}, State> {
   }
 
   render() {
-    const setDate = this.setDate;
+    const setDate = this.setDate
     return (
       <div className="State">
-        <div>date {this.state.date ? formatYYYYMMDD(this.state.date.toString()) : ''}</div>
-        <div>beforeDate{this.state.beforeDate ? formatYYYYMMDD(this.state.beforeDate.toString()) : ''}</div>
+        <div>
+          date
+          {this.state.date ? formatYYYYMMDD(this.state.date.toString()) : ''}
+        </div>
+        <div>
+          beforeDate
+          {this.state.beforeDate
+            ? formatYYYYMMDD(this.state.beforeDate.toString())
+            : ''}
+        </div>
         <button
           onClick={() => {
-            console.log("aaa");
-            this.addState();
+            console.log('aaa')
+            this.addState()
           }}
         >
           追加
@@ -132,8 +145,8 @@ class StateList extends React.Component<{}, State> {
           calendar={this.state.calendar}
         />
       </div>
-    );
+    )
   }
 }
 
-export default StateList;
+export default StateList
