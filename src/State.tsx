@@ -1,7 +1,7 @@
 import * as React from 'react'
 import Calendar from './Calendar'
 import * as dateFns from 'date-fns'
-import { SelectMode, SelectStatus } from './const'
+import { SelectMode, SelectStatus, CreateYearCount } from './const'
 import {
   createMonthList,
   getMonthRangeForYear,
@@ -28,7 +28,7 @@ class StateList extends React.Component<{}, State> {
     super(props)
     const current = new Date()
     const currentMonth = formatYYYYMM(current)
-    const months = getMonthRangeForYear(current, 30)
+    const months = getMonthRangeForYear(current, CreateYearCount)
 
     let calendar = {}
     months.forEach(d => {
@@ -130,7 +130,6 @@ class StateList extends React.Component<{}, State> {
         </div>
         <button
           onClick={() => {
-            console.log('aaa')
             this.addState()
           }}
         >
