@@ -130,7 +130,6 @@ class StateList extends React.Component<{}, State> {
         </div>
         <button
           onClick={() => {
-            console.log('aaa')
             this.addState()
           }}
         >
