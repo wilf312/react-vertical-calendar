@@ -3,8 +3,12 @@ import { getYear, getMonth, getDate, format as DateFormat } from 'date-fns'
 import { List, AutoSizer } from 'react-virtualized'
 import CalendarItem from './CalendarItem'
 import styled from 'styled-components'
+import { DateItem, DateGrid } from './CalendarAtom'
+import { SelectStatus } from '../const'
+import { getHolidayType } from '../util'
 
 const itemSize = 250
+const week = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
 
 function rowRenderer(data, calendar, setDate) {
   const {
@@ -45,7 +49,23 @@ export default class Calendar extends React.Component<Props> {
     const { calendar } = props
     return (
       <div>
-        <Wrap>曜日</Wrap>
+        <Wrap>
+          <DateGrid>
+            {week.map((weekday, index) => {
+              return (
+                <DateItem
+                  isToday={false}
+                  holidayType={getHolidayType(index)}
+                  isCurrentMonth={true}
+                  selectStatus={SelectStatus.NOT_SELECT}
+                  onClick={() => console.log}
+                >
+                  {weekday}
+                </DateItem>
+              )
+            })}
+          </DateGrid>
+        </Wrap>
         <List
           width={window.innerWidth}
           height={window.innerHeight}

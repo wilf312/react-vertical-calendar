@@ -11,7 +11,7 @@ import {
   setYear,
   format
 } from 'date-fns'
-import { SelectStatus } from '../const'
+import { SelectStatus, HolidayType } from '../const'
 
 export const formatYYYYMM = date => {
   return format(date, 'YYYY/MM')
@@ -21,10 +21,12 @@ export const formatYYYYMMDD = date => {
 }
 
 // 曜日番号を渡す 土日判定
-export const isHoliday = day => {
+export const getHolidayType = day => {
   // console.log(date);
   // console.log(dateFns.getDay(date));
-  return !(day === 0 || day === 6)
+  return day === 0 || day === 6
+    ? HolidayType.SATURDAY_OFF
+    : HolidayType.PUBLIC_HOLIDAY
 }
 
 // 祝日判定 todo
