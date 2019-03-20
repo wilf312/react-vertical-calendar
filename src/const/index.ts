@@ -1,3 +1,5 @@
+export const CreateYearCount = 30
+
 // 日の選択状態
 export const SelectStatus = {
   NOT_SELECT: 'NOT_SELECT',

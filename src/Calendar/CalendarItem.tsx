@@ -1,6 +1,6 @@
 import * as React from 'react'
 import { getYear, getMonth, getDate } from 'date-fns'
-import { DateGrid, DateItem } from './CalendarAtom'
+import { DateGrid, DateItem, YearMonthHead } from './CalendarAtom'
 import styled from 'styled-components'
 import { isHoliday } from '../util/index'
 
@@ -23,9 +23,9 @@ export default class CalendarItem extends React.Component<Props> {
     const { monthYear, month, style, clickHandler } = this.props
     return (
       <Wrap style={style}>
-        <div>
+        <YearMonthHead>
           {getYear(monthYear)}年{getMonth(monthYear) + 1}月
-        </div>
+        </YearMonthHead>
         <div>
           <DateGrid>
             {month.map((d, index) => {
