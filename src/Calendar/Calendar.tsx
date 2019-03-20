@@ -44,19 +44,29 @@ export default class Calendar extends React.Component<Props> {
     const props = this.props
     const { calendar } = props
     return (
-      <List
-        width={window.innerWidth}
-        height={window.innerHeight}
-        rowCount={Object.keys(calendar).length}
-        rowHeight={itemSize}
-        // onScroll={a => console.log("onScroll", a)}
-        // onRowsRendered={a => console.log("onRowsRendered", a)}
-        // scrollToCell={a => console.log("scrollToCell", a)}
-        scrollToIndex={props.scrollToIndex}
-        rowRenderer={params => {
-          return rowRenderer(params, calendar, props.setDate)
-        }}
-      />
+      <div>
+        <Wrap>曜日</Wrap>
+        <List
+          width={window.innerWidth}
+          height={window.innerHeight}
+          rowCount={Object.keys(calendar).length}
+          rowHeight={itemSize}
+          // onScroll={a => console.log("onScroll", a)}
+          // onRowsRendered={a => console.log("onRowsRendered", a)}
+          // scrollToCell={a => console.log("scrollToCell", a)}
+          scrollToIndex={props.scrollToIndex}
+          rowRenderer={params => {
+            return rowRenderer(params, calendar, props.setDate)
+          }}
+        />
+      </div>
     )
   }
 }
+
+const Wrap = styled.div`
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+`
