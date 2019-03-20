@@ -15,3 +15,9 @@ export const SelectMode = {
   SINGLE: 'SINGLE',
   RANGE: 'RANGE'
 }
+
+export const HolidayType = {
+  NOT_HOLIDAY: 'NOT_HOLIDAY',
+  SATURDAY_OFF: 'SATURDAY_OFF', // 土日休み
+  PUBLIC_HOLIDAY: 'PUBLIC_HOLIDAY' // 祝日
+}
