@@ -2,7 +2,7 @@ import * as React from 'react'
 import { getYear, getMonth, getDate } from 'date-fns'
 import { DateGrid, DateItem, YearMonthHead } from './CalendarAtom'
 import styled from 'styled-components'
-import { isHoliday } from '../util/index'
+import { getHolidayType } from '../util/index'
 
 interface Props {
   monthYear: string
@@ -33,7 +33,7 @@ export default class CalendarItem extends React.Component<Props> {
                 <DateItem
                   key={index}
                   isToday={d.isToday}
-                  isHoliday={isHoliday(d.day)}
+                  holidayType={getHolidayType(d.day)}
                   isCurrentMonth={d.isCurrentMonth}
                   selectStatus={d.selectStatus}
                   onClick={() => clickHandler(d.date)}
