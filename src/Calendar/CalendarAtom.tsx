@@ -1,5 +1,10 @@
 import styled, { css } from 'styled-components'
 
+// 年月
+export const YearMonthHead = styled.div`
+  font-size: 20px;
+`
+
 // カレンダー部分
 export const DateGrid = styled.div`
   align-items: center;
