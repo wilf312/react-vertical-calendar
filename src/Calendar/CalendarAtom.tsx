@@ -1,5 +1,5 @@
 import styled, { css } from 'styled-components'
-import { HolidayType } from '../const'
+import { HolidayType, SelectStatus } from '../const'
 
 // 年月
 export const YearMonthHead = styled.div`
@@ -29,6 +29,7 @@ export const DateItem = styled.div<IDateItem>`
   justify-content: center;
   height: ${itemSize}px;
   width: ${itemSize}px;
+  border-radius: 50%;
 
   // 休日
   color: ${props =>
@@ -43,13 +44,33 @@ export const DateItem = styled.div<IDateItem>`
       background: #1a73e8;
       color: white;
     `};
-
   // 選択日
   ${props =>
-    props.selectStatus === 'SELECTED' &&
+    props.selectStatus === SelectStatus.SELECTED &&
     css`
       background: red;
       color: white;
     `};
-  border-radius: 50%;
+  // range 選択開始
+  ${props =>
+    props.selectStatus === SelectStatus.RANGE_START &&
+    css`
+      background: red;
+      color: white;
+    `};
+  // range 選択終了
+  ${props =>
+    props.selectStatus === SelectStatus.RANGE_END &&
+    css`
+      background: red;
+      color: white;
+    `};
+  // range 選択期間中
+  ${props =>
+    props.selectStatus === SelectStatus.RANGE_INCLUDED &&
+    css`
+      background: red;
+      color: white;
+      border-radius: 0;
+    `};
 `

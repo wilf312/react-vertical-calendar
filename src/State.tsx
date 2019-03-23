@@ -3,6 +3,7 @@ import Calendar from './Calendar'
 import * as dateFns from 'date-fns'
 import { SelectMode, SelectStatus, CreateYearCount } from './const'
 import {
+  getMonthYearRange,
   createMonthList,
   getMonthRangeForYear,
   formatYYYYMM,
@@ -18,12 +19,15 @@ interface DateItem {
 }
 interface State {
   date: Date
-  beforeDate: Date
+  rangeDate: Date[]
   calendar: any
   scrollToIndex: number
   list?: DateItem[]
 }
-class StateList extends React.Component<{}, State> {
+interface Props {
+  selectMode: string
+}
+class StateList extends React.Component<Props, State> {
   constructor(props) {
     super(props)
     const current = new Date()
@@ -37,7 +41,7 @@ class StateList extends React.Component<{}, State> {
 
     this.state = {
       date: null,
-      beforeDate: null,
+      rangeDate: [new Date('2019-01-01 00:00:00')],
       calendar: calendar,
       scrollToIndex: months.findIndex(d => {
         return formatYYYYMM(d) === currentMonth
@@ -75,7 +79,81 @@ class StateList extends React.Component<{}, State> {
     list[beforeMonth] = updateSelectedDateForMonth(list[beforeMonth], date)
     list[afterMonth] = updateSelectedDateForMonth(list[afterMonth], date)
 
-    this.setState({ date, beforeDate: this.state.date, calendar: list })
+    this.setState({ date, calendar: list })
+  }
+
+  setRangeList(rangeDate: Date[]) {
+    let list = this.state.calendar
+
+    if (rangeDate.length === 2) {
+      const monthYearRange = getMonthYearRange(rangeDate[0], rangeDate[1])
+
+      const from = rangeDate[0]
+      const to = rangeDate[rangeDate.length -1]
+      monthYearRange.unshift(dateFns.addMonths(from, -1))
+      monthYearRange.push(dateFns.addMonths(to, 1))
+      const fromString =  from.toString()
+      const toString =  to.toString()
+
+      monthYearRange.map(month => {
+        const monthDayList = list[formatYYYYMM(month)]
+        list[formatYYYYMM(month)] = monthDayList.map(day => {
+          const dayString = day.date.toString()
+          if (fromString === dayString) {
+            return {
+              ...day,
+              selectStatus: SelectStatus.RANGE_START
+            }
+          } else if (toString === dayString) {
+            return {
+              ...day,
+              selectStatus: SelectStatus.RANGE_END
+            }
+          } else if (dateFns.isWithinRange(day.date, from, to)) {
+            return {
+              ...day,
+              selectStatus: SelectStatus.RANGE_INCLUDED
+            }
+          } else {
+            return {
+              ...day,
+              selectStatus: SelectStatus.NOT_SELECT
+            }
+          }
+
+        })
+      })
+      this.setState({ calendar: list, rangeDate })
+
+    } else if (rangeDate.length === 1) {
+
+    }
+
+    return
+
+    // const selectedMonth = formatYYYYMM(date)
+    // const beforeMonth = formatYYYYMM(dateFns.addMonths(date, -1))
+    // const afterMonth = formatYYYYMM(dateFns.addMonths(date, 1))
+
+    // // カレンダーの変更された部分を取得
+    // const updateSelectedDateForMonth = (month, date) => {
+    //   return month.map(d => {
+    //     const dateString = d.date.toString()
+    //     if (rangeDate.some(date => date.toString() === dateString )) {
+    //       return {
+    //         ...d,
+    //         selectStatus: SelectStatus.SELECTED
+    //       }
+    //     } else {
+    //       return d
+    //     }
+    //   })
+    // }
+    // list[selectedMonth] = updateSelectedDateForMonth(list[selectedMonth], date)
+    // list[beforeMonth] = updateSelectedDateForMonth(list[beforeMonth], date)
+    // list[afterMonth] = updateSelectedDateForMonth(list[afterMonth], date)
+
+    // this.setState({ rangeDate, calendar: list })
   }
 
   resetBeforeSelect() {
@@ -110,8 +188,29 @@ class StateList extends React.Component<{}, State> {
   }
 
   setDate(date) {
-    this.resetBeforeSelect()
-    this.setSelectDateForList(date)
+    console.log('setDate')
+
+    if (this.props.selectMode === SelectMode.RANGE) {
+      let rangeDate = this.state.rangeDate
+      if (rangeDate.length === 0) {
+        rangeDate.push(date)
+        this.setRangeList(rangeDate)
+
+      } else if (rangeDate.length === 1) {
+        rangeDate.push(date)
+        this.setRangeList(rangeDate)
+
+      } else if (rangeDate.length === 2) {
+        this.setState({rangeDate: []})
+
+      } else {
+        console.error('error')
+      }
+
+    } else if (this.props.selectMode === SelectMode.SINGLE) {
+      this.resetBeforeSelect()
+      this.setSelectDateForList(date)
+    }
   }
 
   render() {
@@ -122,12 +221,6 @@ class StateList extends React.Component<{}, State> {
           date
           {this.state.date ? formatYYYYMMDD(this.state.date.toString()) : ''}
         </div>
-        <div>
-          beforeDate
-          {this.state.beforeDate
-            ? formatYYYYMMDD(this.state.beforeDate.toString())
-            : ''}
-        </div>
         <button
           onClick={() => {
             this.addState()
@@ -135,12 +228,14 @@ class StateList extends React.Component<{}, State> {
         >
           追加
         </button>
-        {}
+        <div>
+          mode: {this.props.selectMode}
+          <div>{JSON.stringify(this.state.rangeDate)}</div>
+        </div>
         <Calendar
           state={this.state.calendar}
           scrollToIndex={this.state.scrollToIndex}
           setDate={setDate.bind(this)}
-          selectMode={SelectMode.SINGLE}
           calendar={this.state.calendar}
         />
       </div>

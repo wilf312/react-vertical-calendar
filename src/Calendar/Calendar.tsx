@@ -38,7 +38,6 @@ interface Props {
   state: any
   scrollToIndex?: number
   calendar: any
-  selectMode: string
 }
 export default class Calendar extends React.Component<Props> {
   constructor(props) {
@@ -54,6 +53,7 @@ export default class Calendar extends React.Component<Props> {
             {week.map((weekday, index) => {
               return (
                 <DateItem
+                  key={index}
                   isToday={false}
                   holidayType={getHolidayType(index)}
                   isCurrentMonth={true}

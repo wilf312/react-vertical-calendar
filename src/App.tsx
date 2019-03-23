@@ -1,11 +1,12 @@
 import * as React from 'react'
 import { render } from 'react-dom'
 import State from './State'
+import { SelectMode } from './const'
 
 const App = () => {
   return (
     <div className="App">
-      <State />
+      <State selectMode={SelectMode.RANGE} />
     </div>
   )
 }

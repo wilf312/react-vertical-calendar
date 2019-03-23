@@ -9,7 +9,10 @@ import {
   lastDayOfMonth,
   addMonths,
   setYear,
-  format
+  format,
+  differenceInCalendarMonths,
+  startOfMonth,
+  getMonth
 } from 'date-fns'
 import { SelectStatus, HolidayType } from '../const'
 
@@ -58,6 +61,15 @@ export const getMonthRange = year => {
     monthArr.push(formatYYYYMM(month))
   }
   return monthArr
+}
+
+export const getMonthYearRange = (start, end) => {
+  let diff = differenceInCalendarMonths(start, end)
+  let arr = []
+  for (let i = 0; i <= -diff; i++) {
+    arr.push(setMonth(startOfMonth(start), getMonth(start) + i) )
+  }
+  return arr
 }
 
 // 1ヶ月のカレンダーデータ作成
