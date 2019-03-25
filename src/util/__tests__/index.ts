@@ -18,7 +18,7 @@ describe('format YYYY/MM', () => {
 
     expect(formatYYYYMM(null)).toBe('1970/01')
     expect(formatYYYYMM(0)).toBe('1970/01')
-    expect(formatYYYYMM(1000)).toBe('1970/01')
+    expect(formatYYYYMM(1000)).toBe('1970/02')
   })
 })
 
