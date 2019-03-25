@@ -50,6 +50,13 @@ export const DateItem = styled.div<IDateItem>`
       background: red;
       color: white;
     `};
+  // range 選択開始のみ選択
+  ${props =>
+    props.selectStatus === SelectStatus.RANGE_FROM_ONLY &&
+    css`
+      background: red;
+      color: white;
+    `};
   // range 選択開始
   ${props =>
     props.selectStatus === SelectStatus.RANGE_START &&

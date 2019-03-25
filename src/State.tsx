@@ -3,7 +3,7 @@ import Calendar from './Calendar'
 import * as dateFns from 'date-fns'
 import { SelectMode, SelectStatus, CreateYearCount } from './const'
 import {
-  getMonthYearRange,
+  getMonthYearRangeExtra,
   createMonthList,
   getMonthRangeForYear,
   formatYYYYMM,
@@ -23,6 +23,7 @@ interface State {
   calendar: any
   scrollToIndex: number
   list?: DateItem[]
+  monthYearRange: Date[]
 }
 interface Props {
   selectMode: string
@@ -41,11 +42,12 @@ class StateList extends React.Component<Props, State> {
 
     this.state = {
       date: null,
-      rangeDate: [new Date('2019-01-01 00:00:00')],
+      rangeDate: [],
       calendar: calendar,
       scrollToIndex: months.findIndex(d => {
         return formatYYYYMM(d) === currentMonth
-      })
+      }),
+      monthYearRange: []
     }
   }
 
@@ -75,16 +77,22 @@ class StateList extends React.Component<Props, State> {
     this.setState({ date, calendar: list })
   }
 
-  setRangeList(rangeDate: Date[]) {
+  setRangeList(_rangeDate: Date[], newDate: Date) {
     let list = this.state.calendar
+    let monthYearRange = []
+    let rangeDate = _rangeDate
+    if (rangeDate.length === 1 && dateFns.isBefore(rangeDate[0], newDate)) {
+      rangeDate.push(newDate)
+    } else {
+      rangeDate.unshift(newDate)
+    }
 
+    // from to のセットが揃ったとき
     if (rangeDate.length === 2) {
-      const monthYearRange = getMonthYearRange(rangeDate[0], rangeDate[1])
+      monthYearRange = getMonthYearRangeExtra(rangeDate[0], rangeDate[1])
 
       const from = rangeDate[0]
       const to = rangeDate[rangeDate.length - 1]
-      monthYearRange.unshift(dateFns.addMonths(from, -1))
-      monthYearRange.push(dateFns.addMonths(to, 1))
       const fromString = from.toString()
       const toString = to.toString()
 
@@ -115,8 +123,42 @@ class StateList extends React.Component<Props, State> {
           }
         })
       })
-      this.setState({ calendar: list, rangeDate })
+      this.setState({ calendar: list, rangeDate, monthYearRange })
+      return
+      // from のみ選択されたとき
     } else if (rangeDate.length === 1) {
+      const fromString = rangeDate[0].toString()
+      monthYearRange = getMonthYearRangeExtra(rangeDate[0], rangeDate[0])
+      console.log(monthYearRange)
+
+      monthYearRange.map(month => {
+        const monthDayList = list[formatYYYYMM(month)]
+        list[formatYYYYMM(month)] = monthDayList.map(day => {
+          const dayString = day.date.toString()
+          return {
+            ...day,
+            selectStatus:
+              fromString === dayString
+                ? SelectStatus.RANGE_FROM_ONLY
+                : SelectStatus.NOT_SELECT
+          }
+        })
+      })
+      this.setState({ calendar: list, rangeDate })
+      return
+      // それ以外
+    } else {
+      console.log(this.state.monthYearRange)
+      this.state.monthYearRange.forEach(month => {
+        const monthDayList = list[formatYYYYMM(month)]
+        list[formatYYYYMM(month)] = monthDayList.map(day => {
+          return {
+            ...day,
+            selectStatus: SelectStatus.NOT_SELECT
+          }
+        })
+      })
+      this.setState({ calendar: list, rangeDate: [], monthYearRange: [] })
     }
 
     return
@@ -178,21 +220,9 @@ class StateList extends React.Component<Props, State> {
   }
 
   setDate(date) {
-    console.log('setDate')
-
     if (this.props.selectMode === SelectMode.RANGE) {
       let rangeDate = this.state.rangeDate
-      if (rangeDate.length === 0) {
-        rangeDate.push(date)
-        this.setRangeList(rangeDate)
-      } else if (rangeDate.length === 1) {
-        rangeDate.push(date)
-        this.setRangeList(rangeDate)
-      } else if (rangeDate.length === 2) {
-        this.setState({ rangeDate: [] })
-      } else {
-        console.error('error')
-      }
+      this.setRangeList(rangeDate, date)
     } else if (this.props.selectMode === SelectMode.SINGLE) {
       this.resetBeforeSelect()
       this.setSelectDateForList(date)

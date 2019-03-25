@@ -3,7 +3,14 @@ export const CreateYearCount = 30
 // 日の選択状態
 export const SelectStatus = {
   NOT_SELECT: 'NOT_SELECT',
+
+  // mode: SINGLE
   SELECTED: 'SELECTED',
+
+  // mode: RANGE
+  // from のみ選択したとき
+  RANGE_FROM_ONLY: 'RANGE_FROM_ONLY',
+  // from to 揃ったとき
   RANGE_START: 'RANGE_START',
   RANGE_INCLUDED: 'RANGE_INCLUDED',
   RANGE_END: 'RANGE_END'

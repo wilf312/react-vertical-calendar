@@ -78,6 +78,18 @@ export const getMonthRange = (year: number): string[] => {
   return monthArr
 }
 
+// _monthYearRange の前後月を追加して返す
+// [2000/01/01] => [1999/12, 2000/1, 2000/2]
+export const getMonthYearRangeExtra = (
+  from: dateForDateFns,
+  to: dateForDateFns
+): Date[] => {
+  let monthYearRange = getMonthYearRange(from, to)
+  monthYearRange.unshift(addMonths(from, -1))
+  monthYearRange.push(addMonths(to, 1))
+  return monthYearRange
+}
+
 // start-end間の月の初日のリストを取得する
 // 2000/01/02 - 2000/03-24 => [2000/1, 2000/2, 2000/3]
 export const getMonthYearRange = (
