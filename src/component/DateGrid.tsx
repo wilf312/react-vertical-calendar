@@ -6,5 +6,5 @@ export const DateGrid = styled.div`
   display: grid;
   grid-template-columns: repeat(7, 1fr);
   grid-auto-flow: dense;
-  grid-gap: 2px 0;
+  grid-gap: 4px 0;
 `
