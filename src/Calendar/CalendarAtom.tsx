@@ -81,4 +81,11 @@ export const DateItem = styled.div<IDateItem>`
       color: white;
       border-radius: 0;
     `};
+  // range 開始と終了が同じ日
+  ${props =>
+    props.selectStatus === SelectStatus.RANGE_BOTH &&
+    css`
+      background: red;
+      color: white;
+    `};
 `

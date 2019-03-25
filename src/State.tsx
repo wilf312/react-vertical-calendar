@@ -18,11 +18,10 @@ interface DateItem {
   selectStatus: string
 }
 interface State {
-  date: Date
-  rangeDate: Date[]
-  calendar: any
+  date: Date | null // 選択された月
+  rangeDate: Date[] // 選択された range
+  calendar: any // 表示情報
   scrollToIndex: number
-  list?: DateItem[]
   monthYearRange: Date[]
 }
 interface Props {
@@ -51,28 +50,6 @@ class StateList extends React.Component<Props, State> {
     }
   }
 
-  setSelectDateForList(date: Date) {
-    let list = this.state.calendar
-    const monthYearRange = getMonthYearRangeExtra(date, date)
-
-    // カレンダーの変更された部分を取得
-    monthYearRange.forEach(month => {
-      const monthDayList = list[formatYYYYMM(month)]
-      list[formatYYYYMM(month)] = monthDayList.map(day => {
-        if (day.date.toString() === date.toString()) {
-          return {
-            ...day,
-            selectStatus: SelectStatus.SELECTED
-          }
-        } else {
-          return day
-        }
-      })
-    })
-
-    this.setState({ date, calendar: list })
-  }
-
   setRangeList(_rangeDate: Date[], newDate: Date) {
     let list = this.state.calendar
     let monthYearRange = []
@@ -96,8 +73,14 @@ class StateList extends React.Component<Props, State> {
         const monthDayList = list[formatYYYYMM(month)]
         list[formatYYYYMM(month)] = monthDayList.map(day => {
           const dayString = day.date.toString()
-          // 開始日
-          if (fromString === dayString) {
+          // 開始日 と 終了日が同じ日
+          if (fromString === dayString && toString === dayString) {
+            return {
+              ...day,
+              selectStatus: SelectStatus.RANGE_BOTH
+            }
+            // 終了日
+          } else if (fromString === dayString) {
             return {
               ...day,
               selectStatus: SelectStatus.RANGE_START
@@ -162,35 +145,51 @@ class StateList extends React.Component<Props, State> {
     return
   }
 
-  resetBeforeSelect() {
+  // mode single 選択
+  setSelectForSingle(date: Date) {
+    let list = this.state.calendar
+    const monthYearRange = getMonthYearRangeExtra(date, date)
+
+    // カレンダーの変更された部分を取得
+    monthYearRange.forEach(month => {
+      const monthDayList = list[formatYYYYMM(month)]
+      list[formatYYYYMM(month)] = monthDayList.map(day => {
+        if (day.date.toString() === date.toString()) {
+          return {
+            ...day,
+            selectStatus: SelectStatus.SELECTED
+          }
+        } else {
+          return day
+        }
+      })
+    })
+
+    this.setState({ date, calendar: list })
+  }
+
+  // mode single 選択解除
+  resetSelectForSingle() {
     let list = this.state.calendar
     const date = this.state.date
 
     if (!date) {
       return
     }
-    const selectedMonth = formatYYYYMM(date)
-    const beforeMonth = formatYYYYMM(dateFns.addMonths(date, -1))
-    const afterMonth = formatYYYYMM(dateFns.addMonths(date, 1))
+    const monthYearRange = getMonthYearRangeExtra(date, date)
 
     // カレンダーの変更された部分を取得
-    const updateSelectedDateForMonth = (month, date) => {
-      return month.map(d => {
-        if (d.date.toString() === date.toString()) {
-          return {
-            ...d,
-            selectStatus: SelectStatus.NOT_SELECT
-          }
-        } else {
-          return d
+    monthYearRange.forEach(month => {
+      const monthDayList = list[formatYYYYMM(month)]
+      list[formatYYYYMM(month)] = monthDayList.map(day => {
+        return {
+          ...day,
+          selectStatus: SelectStatus.NOT_SELECT
         }
       })
-    }
-    list[selectedMonth] = updateSelectedDateForMonth(list[selectedMonth], date)
-    list[beforeMonth] = updateSelectedDateForMonth(list[beforeMonth], date)
-    list[afterMonth] = updateSelectedDateForMonth(list[afterMonth], date)
+    })
 
-    this.setState({ calendar: list })
+    this.setState({ date, calendar: list })
   }
 
   setDate(date) {
@@ -198,8 +197,8 @@ class StateList extends React.Component<Props, State> {
       let rangeDate = this.state.rangeDate
       this.setRangeList(rangeDate, date)
     } else if (this.props.selectMode === SelectMode.SINGLE) {
-      this.resetBeforeSelect()
-      this.setSelectDateForList(date)
+      this.resetSelectForSingle()
+      this.setSelectForSingle(date)
     }
   }
 

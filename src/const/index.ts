@@ -13,7 +13,9 @@ export const SelectStatus = {
   // from to 揃ったとき
   RANGE_START: 'RANGE_START',
   RANGE_INCLUDED: 'RANGE_INCLUDED',
-  RANGE_END: 'RANGE_END'
+  RANGE_END: 'RANGE_END',
+  // from to が同じ日だったとき
+  RANGE_BOTH: 'RANGE_BOTH'
 }
 
 // カレンダーの選択モード
