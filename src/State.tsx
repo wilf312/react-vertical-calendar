@@ -53,26 +53,22 @@ class StateList extends React.Component<Props, State> {
 
   setSelectDateForList(date: Date) {
     let list = this.state.calendar
-    const selectedMonth = formatYYYYMM(date)
-    const beforeMonth = formatYYYYMM(dateFns.addMonths(date, -1))
-    const afterMonth = formatYYYYMM(dateFns.addMonths(date, 1))
+    const monthYearRange = getMonthYearRangeExtra(date, date)
 
     // カレンダーの変更された部分を取得
-    const updateSelectedDateForMonth = (month, date) => {
-      return month.map(d => {
-        if (d.date.toString() === date.toString()) {
+    monthYearRange.forEach(month => {
+      const monthDayList = list[formatYYYYMM(month)]
+      list[formatYYYYMM(month)] = monthDayList.map(day => {
+        if (day.date.toString() === date.toString()) {
           return {
-            ...d,
+            ...day,
             selectStatus: SelectStatus.SELECTED
           }
         } else {
-          return d
+          return day
         }
       })
-    }
-    list[selectedMonth] = updateSelectedDateForMonth(list[selectedMonth], date)
-    list[beforeMonth] = updateSelectedDateForMonth(list[beforeMonth], date)
-    list[afterMonth] = updateSelectedDateForMonth(list[afterMonth], date)
+    })
 
     this.setState({ date, calendar: list })
   }
@@ -100,21 +96,25 @@ class StateList extends React.Component<Props, State> {
         const monthDayList = list[formatYYYYMM(month)]
         list[formatYYYYMM(month)] = monthDayList.map(day => {
           const dayString = day.date.toString()
+          // 開始日
           if (fromString === dayString) {
             return {
               ...day,
               selectStatus: SelectStatus.RANGE_START
             }
+            // 終了日
           } else if (toString === dayString) {
             return {
               ...day,
               selectStatus: SelectStatus.RANGE_END
             }
+            // 選択中
           } else if (dateFns.isWithinRange(day.date, from, to)) {
             return {
               ...day,
               selectStatus: SelectStatus.RANGE_INCLUDED
             }
+            // 選択外
           } else {
             return {
               ...day,
@@ -160,30 +160,6 @@ class StateList extends React.Component<Props, State> {
     }
 
     return
-
-    // const selectedMonth = formatYYYYMM(date)
-    // const beforeMonth = formatYYYYMM(dateFns.addMonths(date, -1))
-    // const afterMonth = formatYYYYMM(dateFns.addMonths(date, 1))
-
-    // // カレンダーの変更された部分を取得
-    // const updateSelectedDateForMonth = (month, date) => {
-    //   return month.map(d => {
-    //     const dateString = d.date.toString()
-    //     if (rangeDate.some(date => date.toString() === dateString )) {
-    //       return {
-    //         ...d,
-    //         selectStatus: SelectStatus.SELECTED
-    //       }
-    //     } else {
-    //       return d
-    //     }
-    //   })
-    // }
-    // list[selectedMonth] = updateSelectedDateForMonth(list[selectedMonth], date)
-    // list[beforeMonth] = updateSelectedDateForMonth(list[beforeMonth], date)
-    // list[afterMonth] = updateSelectedDateForMonth(list[afterMonth], date)
-
-    // this.setState({ rangeDate, calendar: list })
   }
 
   resetBeforeSelect() {

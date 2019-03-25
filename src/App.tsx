@@ -6,7 +6,7 @@ import { SelectMode } from './const'
 const App = () => {
   return (
     <div className="App">
-      <State selectMode={SelectMode.RANGE} />
+      <State selectMode={SelectMode.SINGLE} />
     </div>
   )
 }
