@@ -16,17 +16,17 @@ import {
 } from 'date-fns'
 import { SelectStatus, HolidayType } from '../const'
 
-export const formatYYYYMM = date => {
+type dateForDateFns = Date | string | number
+
+export const formatYYYYMM = (date: dateForDateFns) => {
   return format(date, 'YYYY/MM')
 }
-export const formatYYYYMMDD = date => {
+export const formatYYYYMMDD = (date: dateForDateFns) => {
   return format(date, 'YYYY/MM/DD')
 }
 
 // 曜日番号を渡す 土日判定
-export const getHolidayType = day => {
-  // console.log(date);
-  // console.log(dateFns.getDay(date));
+export const getHolidayType = (day: number) => {
   return day === 0 || day === 6
     ? HolidayType.SATURDAY_OFF
     : HolidayType.PUBLIC_HOLIDAY
@@ -38,12 +38,15 @@ export const isPublicHoliday = day => {
 }
 
 // 今日
-export const isToday = date => {
-  return formatYYYYMMDD(date) === formatYYYYMMDD(new Date())
+export const isToday = (date: Date) => {
+  return date.toString() === new Date().toString()
 }
 
 // 指定された日付からrange数分の年を取得
-export const getMonthRangeForYear = (currentDate, range) => {
+export const getMonthRangeForYear = (
+  currentDate: dateForDateFns,
+  range: number
+) => {
   let monthArr = []
   const year = getYear(currentDate)
   for (let start = year - range; start < year + range; start++) {
@@ -53,7 +56,7 @@ export const getMonthRangeForYear = (currentDate, range) => {
 }
 
 // 指定された年の月リストを取得 ['2000/01', '2000/02' ... '2000/12']
-export const getMonthRange = year => {
+export const getMonthRange = (year: number): string[] => {
   const date = setYear(setDate(new Date(), 14), year)
   const monthArr = []
   for (let start = 0; start < 12; start++) {
@@ -63,17 +66,30 @@ export const getMonthRange = year => {
   return monthArr
 }
 
-export const getMonthYearRange = (start, end) => {
+// start-end間の月の初日のリストを取得する
+// 2000/01/02 - 2000/03-24 => [2000/1, 2000/2, 2000/3]
+export const getMonthYearRange = (
+  start: dateForDateFns,
+  end: dateForDateFns
+): Date[] => {
   let diff = differenceInCalendarMonths(start, end)
-  let arr = []
+  let monthYearRange = []
+  const startOfMonthDate: Date = startOfMonth(start)
+  const startMonth: number = getMonth(start)
   for (let i = 0; i <= -diff; i++) {
-    arr.push(setMonth(startOfMonth(start), getMonth(start) + i) )
+    monthYearRange.push(setMonth(startOfMonthDate, startMonth + i))
   }
-  return arr
+  return monthYearRange
 }
 
 // 1ヶ月のカレンダーデータ作成
-export const createMonthList = month => {
+interface IDate {
+  date: Date
+  day: number
+  isToday: boolean
+  isCurrentMonth: boolean
+}
+export const createMonthList = (month: dateForDateFns): IDate[] => {
   const start = parse(month)
   const startDate = getDate(start)
   const end = lastDayOfMonth(start)
@@ -93,6 +109,7 @@ export const createMonthList = month => {
   }
 
   // 前月の曜日追加
+  // TODO: 別の関数に切り出す
   const beforePaddingCount = getDay(arr[0].date)
   // console.log(beforePaddingCount);
   // console.log(start);
@@ -108,6 +125,7 @@ export const createMonthList = month => {
   }
 
   // 次月の曜日追加
+  // TODO: 別の関数に切り出す
   const endObj = arr[arr.length - 1]
   const nextPaddingCount = 7 - getDay(endObj.date)
   const endDate = getDate(endObj.date)

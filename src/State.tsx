@@ -49,13 +49,6 @@ class StateList extends React.Component<Props, State> {
     }
   }
 
-  addState() {
-    // const aaa = "2018/12";
-    // this.state.list.unshift(createList(aaa));
-    // console.log(this.state.list);
-    // this.setState({ list: this.state.list });
-  }
-
   setSelectDateForList(date: Date) {
     let list = this.state.calendar
     const selectedMonth = formatYYYYMM(date)
@@ -89,11 +82,11 @@ class StateList extends React.Component<Props, State> {
       const monthYearRange = getMonthYearRange(rangeDate[0], rangeDate[1])
 
       const from = rangeDate[0]
-      const to = rangeDate[rangeDate.length -1]
+      const to = rangeDate[rangeDate.length - 1]
       monthYearRange.unshift(dateFns.addMonths(from, -1))
       monthYearRange.push(dateFns.addMonths(to, 1))
-      const fromString =  from.toString()
-      const toString =  to.toString()
+      const fromString = from.toString()
+      const toString = to.toString()
 
       monthYearRange.map(month => {
         const monthDayList = list[formatYYYYMM(month)]
@@ -120,13 +113,10 @@ class StateList extends React.Component<Props, State> {
               selectStatus: SelectStatus.NOT_SELECT
             }
           }
-
         })
       })
       this.setState({ calendar: list, rangeDate })
-
     } else if (rangeDate.length === 1) {
-
     }
 
     return
@@ -195,18 +185,14 @@ class StateList extends React.Component<Props, State> {
       if (rangeDate.length === 0) {
         rangeDate.push(date)
         this.setRangeList(rangeDate)
-
       } else if (rangeDate.length === 1) {
         rangeDate.push(date)
         this.setRangeList(rangeDate)
-
       } else if (rangeDate.length === 2) {
-        this.setState({rangeDate: []})
-
+        this.setState({ rangeDate: [] })
       } else {
         console.error('error')
       }
-
     } else if (this.props.selectMode === SelectMode.SINGLE) {
       this.resetBeforeSelect()
       this.setSelectDateForList(date)
@@ -221,13 +207,6 @@ class StateList extends React.Component<Props, State> {
           date
           {this.state.date ? formatYYYYMMDD(this.state.date.toString()) : ''}
         </div>
-        <button
-          onClick={() => {
-            this.addState()
-          }}
-        >
-          追加
-        </button>
         <div>
           mode: {this.props.selectMode}
           <div>{JSON.stringify(this.state.rangeDate)}</div>
