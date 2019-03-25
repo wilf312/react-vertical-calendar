@@ -25,8 +25,15 @@ export const SelectMode = {
   RANGE: 'RANGE'
 }
 
-export const HolidayType = {
-  NOT_HOLIDAY: 'NOT_HOLIDAY',
-  SATURDAY_OFF: 'SATURDAY_OFF', // 土日休み
-  PUBLIC_HOLIDAY: 'PUBLIC_HOLIDAY' // 祝日
+export const enum HolidayType {
+  NOT_HOLIDAY = 'NOT_HOLIDAY',
+  SATURDAY_OFF = 'SATURDAY_OFF', // 土日休み
+  PUBLIC_HOLIDAY = 'PUBLIC_HOLIDAY' // 祝日
 }
+export type UHolidayType =
+  | HolidayType.NOT_HOLIDAY
+  | HolidayType.SATURDAY_OFF
+  | HolidayType.PUBLIC_HOLIDAY
+
+export const week = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
+export const ItemHeight = 250

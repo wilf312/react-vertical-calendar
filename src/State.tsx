@@ -1,7 +1,7 @@
 import * as React from 'react'
 import Calendar from './Calendar'
-import * as dateFns from 'date-fns'
-import { SelectMode, SelectStatus, CreateYearCount } from './const'
+import { isBefore, isWithinRange } from 'date-fns'
+import { SelectMode, SelectStatus, CreateYearCount, HolidayType } from './const'
 import {
   getMonthYearRangeExtra,
   createMonthList,
@@ -10,13 +10,6 @@ import {
   formatYYYYMMDD
 } from './util'
 
-interface DateItem {
-  date: Date
-  day: number
-  isToday: boolean
-  isCurrentMonth: boolean
-  selectStatus: string
-}
 interface State {
   date: Date | null // 選択された月
   rangeDate: Date[] // 選択された range
@@ -54,7 +47,7 @@ class StateList extends React.Component<Props, State> {
     let list = this.state.calendar
     let monthYearRange = []
     let rangeDate = _rangeDate
-    if (rangeDate.length === 1 && dateFns.isBefore(rangeDate[0], newDate)) {
+    if (rangeDate.length === 1 && isBefore(rangeDate[0], newDate)) {
       rangeDate.push(newDate)
     } else {
       rangeDate.unshift(newDate)
@@ -92,7 +85,7 @@ class StateList extends React.Component<Props, State> {
               selectStatus: SelectStatus.RANGE_END
             }
             // 選択中
-          } else if (dateFns.isWithinRange(day.date, from, to)) {
+          } else if (isWithinRange(day.date, from, to)) {
             return {
               ...day,
               selectStatus: SelectStatus.RANGE_INCLUDED

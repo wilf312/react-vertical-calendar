@@ -1,14 +1,10 @@
 import * as React from 'react'
-import { getYear, getMonth, getDate, format as DateFormat } from 'date-fns'
 import { List, AutoSizer } from 'react-virtualized'
 import CalendarItem from './CalendarItem'
 import styled from 'styled-components'
 import { DateItem, DateGrid } from '../component'
-import { SelectStatus } from '../const'
+import { SelectStatus, week, ItemHeight } from '../const'
 import { getHolidayType } from '../util'
-
-const itemSize = 250
-const week = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
 
 function rowRenderer(data, calendar, setDate) {
   const {
@@ -69,7 +65,7 @@ export default class Calendar extends React.Component<Props> {
           width={window.innerWidth}
           height={window.innerHeight}
           rowCount={Object.keys(calendar).length}
-          rowHeight={itemSize}
+          rowHeight={ItemHeight}
           // onScroll={a => console.log("onScroll", a)}
           // onRowsRendered={a => console.log("onRowsRendered", a)}
           // scrollToCell={a => console.log("scrollToCell", a)}
