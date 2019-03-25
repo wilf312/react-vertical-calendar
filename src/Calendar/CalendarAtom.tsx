@@ -12,11 +12,10 @@ export const DateGrid = styled.div`
   display: grid;
   grid-template-columns: repeat(7, 1fr);
   grid-auto-flow: dense;
-  grid-gap: 2px 10px;
+  grid-gap: 2px 0;
 `
 
 // カレンダー 日のスタイル
-const itemSize = 36
 type IDateItem = {
   holidayType: string
   isCurrentMonth: boolean
@@ -27,8 +26,8 @@ export const DateItem = styled.div<IDateItem>`
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  height: ${itemSize}px;
-  width: ${itemSize}px;
+  height: 36px;
+  width: 40px;
   border-radius: 50%;
 
   // 休日
@@ -57,6 +56,7 @@ export const DateItem = styled.div<IDateItem>`
     css`
       background: red;
       color: white;
+      border-radius: 50% 0 0 50% / 50% 0 0 50%;
     `};
   // range 選択終了
   ${props =>
@@ -64,6 +64,7 @@ export const DateItem = styled.div<IDateItem>`
     css`
       background: red;
       color: white;
+      border-radius: 0 50% 50% 0 / 0 50% 50% 0;
     `};
   // range 選択期間中
   ${props =>
