@@ -136,11 +136,8 @@ export const createMonthList = (month: dateForDateFns): IDate[] => {
   // 前月の曜日追加
   // TODO: 別の関数に切り出す
   const beforePaddingCount = getDay(arr[0].date)
-  // console.log(beforePaddingCount);
-  // console.log(start);
   for (var i = 1; i <= beforePaddingCount; i++) {
     const date = setDate(start, startDate - i)
-    // console.log(startDate - i);
     arr.unshift({
       date: date,
       day: getDay(date),
@@ -156,7 +153,6 @@ export const createMonthList = (month: dateForDateFns): IDate[] => {
   const endDate = getDate(endObj.date)
   for (var i = 1; i < nextPaddingCount; i++) {
     const date = setDate(endObj.date, endDate + i)
-    // console.log(startDate - i);
     arr.push({
       date: date,
       day: getDay(date),

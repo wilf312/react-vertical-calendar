@@ -129,7 +129,6 @@ class StateList extends React.Component<Props, State> {
     } else if (rangeDate.length === 1) {
       const fromString = rangeDate[0].toString()
       monthYearRange = getMonthYearRangeExtra(rangeDate[0], rangeDate[0])
-      console.log(monthYearRange)
 
       monthYearRange.map(month => {
         const monthDayList = list[formatYYYYMM(month)]
@@ -148,7 +147,6 @@ class StateList extends React.Component<Props, State> {
       return
       // それ以外
     } else {
-      console.log(this.state.monthYearRange)
       this.state.monthYearRange.forEach(month => {
         const monthDayList = list[formatYYYYMM(month)]
         list[formatYYYYMM(month)] = monthDayList.map(day => {

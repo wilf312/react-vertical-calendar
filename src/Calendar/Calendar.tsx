@@ -21,7 +21,6 @@ function rowRenderer(data, calendar, setDate) {
   const calendarKey = Object.keys(calendar)[index]
   const month = calendar[calendarKey]
   const monthYear = month[14]
-  // console.log(style);
 
   return (
     <CalendarItem
