@@ -1,20 +1,6 @@
 import styled, { css } from 'styled-components'
 import { HolidayType, SelectStatus } from '../const'
 
-// 年月
-export const YearMonthHead = styled.div`
-  font-size: 20px;
-`
-
-// カレンダー部分
-export const DateGrid = styled.div`
-  align-items: center;
-  display: grid;
-  grid-template-columns: repeat(7, 1fr);
-  grid-auto-flow: dense;
-  grid-gap: 2px 0;
-`
-
 // カレンダー 日のスタイル
 type IDateItem = {
   holidayType: string

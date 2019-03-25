@@ -3,7 +3,7 @@ import { getYear, getMonth, getDate, format as DateFormat } from 'date-fns'
 import { List, AutoSizer } from 'react-virtualized'
 import CalendarItem from './CalendarItem'
 import styled from 'styled-components'
-import { DateItem, DateGrid } from './CalendarAtom'
+import { DateItem, DateGrid } from '../component'
 import { SelectStatus } from '../const'
 import { getHolidayType } from '../util'
 

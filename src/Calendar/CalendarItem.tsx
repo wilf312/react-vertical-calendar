@@ -1,6 +1,7 @@
 import * as React from 'react'
 import { getYear, getMonth, getDate } from 'date-fns'
-import { DateGrid, DateItem, YearMonthHead } from './CalendarAtom'
+import { DateGrid, DateItem, YearMonthHead } from '../component'
+
 import styled from 'styled-components'
 import { getHolidayType } from '../util/index'
 
