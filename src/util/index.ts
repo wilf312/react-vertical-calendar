@@ -3,7 +3,6 @@ import {
   setMonth,
   getDate,
   format as DateFormat,
-  parse,
   getDay,
   setDate,
   lastDayOfMonth,
@@ -12,17 +11,30 @@ import {
   format,
   differenceInCalendarMonths,
   startOfMonth,
-  getMonth
+  getMonth,
+  parse as dateFnsParse,
+  isValid
 } from 'date-fns'
 import { SelectStatus, HolidayType } from '../const'
 
 type dateForDateFns = Date | string | number
 
+// 外部から渡される日時についてはフォーマットのチェックをはさむ
+// JSTは+09へ変換、パースできない場合はエラーを出す
+export const parse = (date: dateForDateFns) => {
+  const _date = typeof date === 'string' ? date.replace('JST', '+09') : date
+  const __date = new Date(_date)
+  if (!isValid(__date)) {
+    new Error('not valid date' + _date.toString())
+  }
+  return __date
+}
+
 export const formatYYYYMM = (date: dateForDateFns) => {
-  return format(date, 'YYYY/MM')
+  return format(parse(date), 'YYYY/MM')
 }
 export const formatYYYYMMDD = (date: dateForDateFns) => {
-  return format(date, 'YYYY/MM/DD')
+  return format(parse(date), 'YYYY/MM/DD')
 }
 
 // 曜日番号を渡す 土日判定
@@ -48,7 +60,7 @@ export const getMonthRangeForYear = (
   range: number
 ) => {
   let monthArr = []
-  const year = getYear(currentDate)
+  const year = getYear(parse(currentDate))
   for (let start = year - range; start < year + range; start++) {
     monthArr = [...monthArr, ...getMonthRange(start)]
   }
@@ -72,10 +84,11 @@ export const getMonthYearRange = (
   start: dateForDateFns,
   end: dateForDateFns
 ): Date[] => {
-  let diff = differenceInCalendarMonths(start, end)
+  const _start = parse(start)
+  let diff = differenceInCalendarMonths(_start, end)
   let monthYearRange = []
-  const startOfMonthDate: Date = startOfMonth(start)
-  const startMonth: number = getMonth(start)
+  const startOfMonthDate: Date = startOfMonth(_start)
+  const startMonth: number = getMonth(_start)
   for (let i = 0; i <= -diff; i++) {
     monthYearRange.push(setMonth(startOfMonthDate, startMonth + i))
   }
