@@ -7,7 +7,7 @@
   "license": "MIT",
   "scripts": {
     "prettier": "prettier --write src/**/*.{js,jsx,ts,tsx,css}",
-    "build": "webpack  --mode production --module-bind 'tsx=ts-loader' --module-bind 'ts=ts-loader' --resolve-extensions .ts,.js,.tsx,jsx --debug",
+    "build": "webpack  --mode production --module-bind 'tsx=ts-loader' --module-bind 'ts=ts-loader' --resolve-extensions .ts,.js,.tsx,jsx --debug && cp ./src/index.html ./dist/index.html",
     "start": "webpack-dev-server --module-bind 'tsx=ts-loader' --module-bind 'ts=ts-loader' --resolve-extensions .ts,.js,.tsx,jsx --debug",
     "watch": "webpack  --mode development --module-bind 'tsx=ts-loader' --module-bind 'ts=ts-loader' --resolve-extensions .ts,.js,.tsx,jsx --debug --watch",
     "test": "jest",
@@ -41,11 +41,7 @@
     "webpack-dev-server": "^3.2.1"
   },
   "jest": {
-    "moduleFileExtensions": [
-      "ts",
-      "tsx",
-      "js"
-    ],
+    "moduleFileExtensions": ["ts", "tsx", "js"],
     "transform": {
       "^.+\\.(ts|tsx)$": "ts-jest"
     },
@@ -54,9 +50,7 @@
         "tsConfigFile": "tsconfig.json"
       }
     },
-    "testMatch": [
-      "**/__tests__/*.+(ts|tsx|js)"
-    ]
+    "testMatch": ["**/__tests__/*.+(ts|tsx|js)"]
   },
   "husky": {
     "hooks": {
@@ -64,9 +58,6 @@
     }
   },
   "lint-staged": {
-    "*.{ts,tsx,js,json,css,md}": [
-      "prettier --write",
-      "git add"
-    ]
+    "*.{ts,tsx,js,json,css,md}": ["prettier --write", "git add"]
   }
 }
