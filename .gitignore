@@ -81,3 +81,6 @@ dist
 .idea
 
 .firebase/
+
+# VSCode plugin local history
+.history
