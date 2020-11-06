@@ -1,6 +1,6 @@
 import * as React from 'react'
 import Calendar from './Calendar'
-import { isBefore, isWithinRange } from 'date-fns'
+import { isBefore, isWithinInterval } from 'date-fns'
 import { SelectMode, SelectStatus, CreateYearCount, HolidayType } from './const'
 import {
   getMonthYearRangeExtra,
@@ -85,7 +85,10 @@ class StateList extends React.Component<Props, State> {
               selectStatus: SelectStatus.RANGE_END
             }
             // 選択中
-          } else if (isWithinRange(day.date, from, to)) {
+          } else if (isWithinInterval(day.date, {
+            start:from,
+            end: to
+          })) {
             return {
               ...day,
               selectStatus: SelectStatus.RANGE_INCLUDED

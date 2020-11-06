@@ -22,10 +22,11 @@ export default class CalendarItem extends React.Component<Props> {
 
   render() {
     const { monthYear, month, style, clickHandler } = this.props
+    const monthYearForDate = new Date(monthYear)
     return (
       <Wrap style={style}>
         <YearMonthHead>
-          {getYear(monthYear)}年{getMonth(monthYear) + 1}月
+          {getYear(monthYearForDate)}年{getMonth(monthYearForDate) + 1}月
         </YearMonthHead>
         <div>
           <DateGrid>
