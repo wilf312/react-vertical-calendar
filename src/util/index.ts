@@ -32,10 +32,10 @@ export const parse = (date: dateForDateFns) => {
 }
 
 export const formatYYYYMM = (date: dateForDateFns) => {
-  return format(parse(date), 'YYYY/MM')
+  return format(parse(date), 'yyyy/MM')
 }
 export const formatYYYYMMDD = (date: dateForDateFns) => {
-  return format(parse(date), 'YYYY/MM/DD')
+  return format(parse(date), 'yyyy/MM/DD')
 }
 
 // 曜日番号を渡す 土日判定
