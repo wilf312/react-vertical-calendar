@@ -32,10 +32,10 @@ export const parse = (date: dateForDateFns) => {
 }
 
 export const formatYYYYMM = (date: dateForDateFns) => {
-  return format(parse(date), 'YYYY/MM')
+  return format(parse(date), 'yyyy/MM')
 }
 export const formatYYYYMMDD = (date: dateForDateFns) => {
-  return format(parse(date), 'YYYY/MM/DD')
+  return format(parse(date), 'yyyy/MM/DD')
 }
 
 // 曜日番号を渡す 土日判定
@@ -77,8 +77,8 @@ export const getMonthRange = (year: number): string[] => {
 // _monthYearRange の前後月を追加して返す
 // [2000/01/01] => [1999/12, 2000/1, 2000/2]
 export const getMonthYearRangeExtra = (
-  from: dateForDateFns,
-  to: dateForDateFns
+  from: number | Date,
+  to: number | Date
 ): Date[] => {
   let monthYearRange = getMonthYearRange(from, to)
   monthYearRange.unshift(addMonths(from, -1))
@@ -90,7 +90,7 @@ export const getMonthYearRangeExtra = (
 // 2000/01/02 - 2000/03-24 => [2000/1, 2000/2, 2000/3]
 export const getMonthYearRange = (
   start: dateForDateFns,
-  end: dateForDateFns
+  end: number | Date
 ): Date[] => {
   const _start = parse(start)
   let diff = differenceInCalendarMonths(_start, end)
