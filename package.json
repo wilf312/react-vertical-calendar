@@ -14,7 +14,7 @@
     "test:debug": "jest --watch"
   },
   "dependencies": {
-    "date-fns": "2.16.1",
+    "date-fns": "2.30.0",
     "react": "^17.0.0",
     "react-dom": "^17.0.0",
     "react-virtualized": "^9.21.0",
