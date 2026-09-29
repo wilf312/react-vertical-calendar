@@ -799,10 +799,10 @@
     "@types/prop-types" "*"
     "@types/react" "*"
 
-"@types/react-virtualized@9.21.10":
-  version "9.21.10"
-  resolved "https://registry.yarnpkg.com/@types/react-virtualized/-/react-virtualized-9.21.10.tgz#cd072dc9c889291ace2c4c9de8e8c050da8738b7"
-  integrity sha512-f5Ti3A7gGdLkPPFNHTrvKblpsPNBiQoSorOEOD+JPx72g/Ng2lOt4MYfhvQFQNgyIrAro+Z643jbcKafsMW2ag==
+"@types/react-virtualized@9.22.4":
+  version "9.22.4"
+  resolved "https://registry.yarnpkg.com/@types/react-virtualized/-/react-virtualized-9.22.4.tgz#5f5af17c35ec7963e2804aab42e0716fb12f9527"
+  integrity sha512-7xBz1a/zXt4Qpogi9khBeaZhphcHPnEF3uchRXsqsKhpHwgxgrpo6OgghLqgc5NWQ6aj5/ws7HaNzIShKNCnXg==
   dependencies:
     "@types/prop-types" "*"
     "@types/react" "*"
